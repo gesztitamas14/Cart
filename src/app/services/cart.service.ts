@@ -5,6 +5,7 @@ export interface CartItem {
   price: number;
   quantity: number;
   image?: string;
+  discount?: number;
 }
 
 @Injectable({
@@ -31,6 +32,7 @@ export class CartService {
       image: 'https://firebasestorage.googleapis.com/v0/b/cart-frederik.firebasestorage.app/o/bread.png?alt=media&token=26055259-5caa-4e4a-b685-e6bab4b7ea8d'
     }
   ];
+  totalDiscount: number = 0;
 
   constructor() {}
 
@@ -43,22 +45,29 @@ export class CartService {
   }
 
   calculateTotal(): number {
+    this.totalDiscount = 0;
     let total = 0;
-    // 1 default calculation
+    this.cart.forEach(item => item.discount = 0);
+
+    // Default calculation
     for (const item of this.cart) {
       total += item.price * item.quantity;
     }
 
-    // 2 10% discount for price over 3000
+    //10% discount if total is over 3000 Ft
     if (total > 3000) {
-      total *= 0.9;
+      let discountAmount = total * 0.1;
+      this.totalDiscount += discountAmount;
+      total -= discountAmount;
     }
 
-    // 3 20% discount for 5 apples
-    const almaItem = this.cart.find(i => i.name === 'alma');
-    if (almaItem && almaItem.quantity > 5) {
-      const almaDiscount = almaItem.price * almaItem.quantity * 0.2;
-      total -= almaDiscount;
+    //20% discount if more than 5 'alma'
+    const appleItem = this.cart.find(i => i.name === 'alma'); // FIXED: Check for "alma" instead of "apple"
+    if (appleItem && appleItem.quantity > 5) {
+      let appleDiscount = appleItem.price * appleItem.quantity * 0.2;
+      appleItem.discount = appleDiscount;
+      this.totalDiscount += appleDiscount;
+      total -= appleDiscount;
     }
 
     return total;

@@ -8,7 +8,8 @@ import { CartService, CartItem } from '../services/cart.service';
 })
 export class CartComponent implements OnInit {
   cartItems: CartItem[] = [];
-  finalTotal = 0;
+  finalTotal: number = 0;
+  totalDiscount: number = 0;
 
   constructor(private cartService: CartService) {}
 
@@ -18,7 +19,7 @@ export class CartComponent implements OnInit {
   }
 
   calculateTotal(): void {
-    this.cartService.setCartItems(this.cartItems);
     this.finalTotal = this.cartService.calculateTotal();
+    this.totalDiscount = this.cartService.totalDiscount;
   }
 }

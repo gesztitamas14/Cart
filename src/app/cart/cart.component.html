@@ -12,7 +12,15 @@
           />
           <div class="card-body text-center">
             <h5 class="card-title fw-bold text-capitalize text-dark">{{ item.name }}</h5>
-            <p class="card-text fs-5 text-secondary">Ár: <span class="fw-bold text-dark">{{ item.price }} Ft</span></p>
+  
+            <p class="card-text fs-5 text-secondary">
+              Ár: <span class="fw-bold text-dark">{{ item.price * item.quantity }} Ft</span>
+            </p>
+  
+            <p *ngIf="item.discount && item.discount > 0" class="text-danger fw-semibold">
+              Kedvezmény: -{{ item.discount | number: '1.0-0' }} Ft
+            </p>
+  
             <div class="d-flex justify-content-center align-items-center gap-2">
               <label class="form-label mb-0 fw-semibold">Mennyiség:</label>
               <input
@@ -29,9 +37,14 @@
       </div>
     </div>
   
+    <div class="text-center mt-4" *ngIf="totalDiscount > 0">
+      <h5 class="fw-bold text-danger">
+        Összes kedvezmény: -{{ totalDiscount | number: '1.0-0' }} Ft
+      </h5>
+    </div>
     <div class="text-center mt-4">
       <h4 class="fw-bold text-success bg-light p-3 rounded shadow-sm">
-        Végösszeg: <span class="text-danger">{{ finalTotal }} Ft</span>
+        Végösszeg: <span class="text-danger">{{ finalTotal | number: '1.0-0' }} Ft</span>
       </h4>
     </div>
   
