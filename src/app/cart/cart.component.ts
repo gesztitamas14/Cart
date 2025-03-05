@@ -18,6 +18,13 @@ export class CartComponent implements OnInit {
     this.calculateTotal();
   }
 
+  onQuantityChange(item: CartItem) {
+    if (item.quantity < 0) {
+        item.quantity = 0;
+    }
+    this.calculateTotal();
+}
+
   calculateTotal(): void {
     this.finalTotal = this.cartService.calculateTotal();
     this.totalDiscount = this.cartService.totalDiscount;

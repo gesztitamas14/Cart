@@ -22,15 +22,16 @@
             </p>
   
             <div class="d-flex justify-content-center align-items-center gap-2">
-              <label class="form-label mb-0 fw-semibold">Mennyiség:</label>
-              <input
-                id="quantity-{{ item.name }}"
-                type="number"
-                class="form-control text-center fw-bold"
-                min="0"
-                [(ngModel)]="item.quantity"
+                <label class="form-label mb-0 fw-semibold">Mennyiség:</label>
+                <input
+                    id="quantity-{{ item.name }}"
+                    type="number"
+                    class="form-control text-center fw-bold"
+                    min="0"
+                    [(ngModel)]="item.quantity"
+                    (change)="onQuantityChange(item)"
                 style="width: 70px;"
-              />
+                />
             </div>
           </div>
         </div>

@@ -47,29 +47,33 @@ export class CartService {
   calculateTotal(): number {
     this.totalDiscount = 0;
     let total = 0;
-    this.cart.forEach(item => item.discount = 0);
-
-    // Default calculation
+    this.cart.forEach(item => {
+        // Prevent negative values
+        if (item.quantity < 0) {
+            item.quantity = 0;
+        }
+        item.discount = 0;
+    });
+    // Default calculation (Sum up price * quantity)
     for (const item of this.cart) {
-      total += item.price * item.quantity;
+        total += item.price * item.quantity;
     }
-
-    //10% discount if total is over 3000 Ft
+    // 10% discount if total is over 3000 Ft
     if (total > 3000) {
-      let discountAmount = total * 0.1;
-      this.totalDiscount += discountAmount;
-      total -= discountAmount;
+        let discountAmount = total * 0.1;
+        this.totalDiscount += discountAmount;
+        total -= discountAmount;
     }
-
-    //20% discount if more than 5 'alma'
-    const appleItem = this.cart.find(i => i.name === 'alma'); // FIXED: Check for "alma" instead of "apple"
+    // 20% discount if more than 5 apples
+    const appleItem = this.cart.find(i => i.name === 'alma');
     if (appleItem && appleItem.quantity > 5) {
-      let appleDiscount = appleItem.price * appleItem.quantity * 0.2;
-      appleItem.discount = appleDiscount;
-      this.totalDiscount += appleDiscount;
-      total -= appleDiscount;
+        let appleDiscount = appleItem.price * appleItem.quantity * 0.2;
+        appleItem.discount = appleDiscount;
+        this.totalDiscount += appleDiscount;
+        total -= appleDiscount;
     }
 
     return total;
-  }
+}
+
 }
